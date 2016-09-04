@@ -1,5 +1,5 @@
 const { app, BrowserWindow } = require('electron')
-const tapParser = require('tap-parser')
+const startTapListener = require('./start-tap-listener')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -46,23 +46,4 @@ app.on('activate', () => {
   }
 })
 
-const attachParser = (readableStream) => {
-  const p = tapParser()
-
-  p.on('assert', ({ ok, id, diag }) => {
-    if (ok) {
-      console.info(`[${id}] ok`)
-    } else {
-      console.error(`[${id}] ${JSON.stringify(diag)}`)
-    }
-  })
-
-  p.on('plan', function ({ start, end }) {
-    readableStream.unpipe(p)
-    process.nextTick(() => attachParser(readableStream))
-  })
-
-  readableStream.pipe(p)
-}
-
-attachParser(process.stdin)
+startTapListener(process.stdin)
