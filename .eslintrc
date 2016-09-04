@@ -1,6 +1,6 @@
 {
   "parser": "babel-eslint",
-  "extends": "standard",
+  "extends": "sagui",
   "env": {
     "browser": true,
     "mocha": true,
