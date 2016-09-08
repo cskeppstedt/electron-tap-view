@@ -1,8 +1,8 @@
 {
-  "name": "electron-react-boilerplate",
-  "productName": "ElectronReact",
-  "version": "0.10.0",
-  "description": "Electron application boilerplate based on React, React Router, Webpack, React Hot Loader for rapid application development",
+  "name": "electron-tap-view",
+  "productName": "electron-tap-view",
+  "version": "0.0.1",
+  "description": "Pipe TAP (Test Anything Protocol) data into the app, get pretty reporting. That's the plan anyway. Kicked off using electron-react-boilerplate (thanks!)",
   "main": "main.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test BABEL_DISABLE_CACHE=1 mocha --compilers js:babel-register --recursive --require ./test/setup.js test/**/*.spec.js",
@@ -25,16 +25,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chentsulin/electron-react-boilerplate.git"
+    "url": "git+ssh://git@github.com:cskeppstedt/electron-tap-view.git"
   },
   "author": {
-    "name": "C. T. Lin",
-    "email": "chentsulin@gmail.com",
-    "url": "https://github.com/chentsulin"
+    "name": "Christoffer Skeppstedt",
+    "email": "c.skeppstedt@gmail.com",
+    "url": "https://github.com/cskeppstedt"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/chentsulin/electron-react-boilerplate/issues"
+    "url": "https://github.com/cskeppstedt/electron-tap-view/issues"
   },
   "keywords": [
     "electron",
@@ -44,7 +44,6 @@
     "webpack",
     "react-hot"
   ],
-  "homepage": "https://github.com/chentsulin/electron-react-boilerplate#readme",
   "devDependencies": {
     "asar": "^0.12.2",
     "babel-core": "^6.14.0",
