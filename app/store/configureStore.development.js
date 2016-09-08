@@ -3,13 +3,14 @@ import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
 import rootReducer from '../reducers'
 import actionCreators from '../actions'
+import ipcMiddleware from '../middlewares/ipc'
 
 const logger = createLogger({
   level: 'info', collapsed: true
 })
 
 const enhancer = compose(
-  applyMiddleware(thunk, logger),
+  applyMiddleware(thunk, logger, ipcMiddleware),
   window.devToolsExtension
     ? window.devToolsExtension({ actionCreators })
     : noop => noop
