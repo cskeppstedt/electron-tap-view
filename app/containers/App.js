@@ -1,8 +1,16 @@
+import { connect } from 'react-redux'
 import React from 'react'
 import Home from '../components/Home'
+import mapStateToProps from './map-state-to-props'
+import mapDispatchToProps from './map-dispatch-to-props'
 
-export default React.createClass({
+const AppContainer = React.createClass({
   render () {
-    return <Home />
+    return <Home assertions={this.props.assertions} />
   }
 })
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AppContainer)
