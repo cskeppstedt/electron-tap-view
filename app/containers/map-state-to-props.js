@@ -1,6 +1,3 @@
-export default ({ assertions, plan }) => (
-  {
-    assertions,
-    plan
-  }
+export default (state) => (
+  state
 )

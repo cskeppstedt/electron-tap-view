@@ -1,13 +1,15 @@
 import React from 'react'
 import Assertion from './Assertion'
+import Plan from './Plan'
 import styles from './Home.css'
 
-export default ({ assertions, plan }) => (
+export default ({ assertions, plan, nextEstimatedCount, currentCount }) => (
   <div className={styles.container}>
-    <h3 className={styles.title}>
-      {plan ? `Plan [${plan.start}..${plan.end}]` : 'Running...'}
-    </h3>
-
+    <Plan
+      currentCount={currentCount}
+      nextEstimatedCount={nextEstimatedCount}
+      plan={plan}
+    />
     {assertions && Object.keys(assertions).map((id) => (
       <Assertion key={id} assertion={assertions[id]} />
     ))}

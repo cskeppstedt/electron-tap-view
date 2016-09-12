@@ -5,6 +5,8 @@ import {
 
 const initialState = {
   assertions: {},
+  currentCount: 0,
+  nextEstimatedCount: 0,
   plan: undefined
 }
 
@@ -17,13 +19,16 @@ export default (state = initialState, action) => {
           ...state.assertions,
           [`assert_${action.payload.id}`]: action.payload
         },
+        currentCount: state.currentCount + 1,
         plan: undefined
       }
 
     case TAP_PLAN:
       return {
         ...state,
-        plan: action.payload
+        currentCount: 0,
+        plan: action.payload,
+        nextEstimatedCount: state.currentCount
       }
 
     default:
