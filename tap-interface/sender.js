@@ -1,11 +1,18 @@
 import { ipcMain } from 'electron'
 import { IPC_DISPATCH_ACTION, IPC_MIDDLEWARE_READY } from '../shared/messages'
+import valvelet from 'valvelet'
+
+const RATE_LIMIT = 10 // The maximum number of allowed calls per interval.
+const RATE_INTERVAL = 100 // The timespan where limit is calculated.
 
 const setupSender = (rendererEndpoint) => {
   console.info('renderer ready')
-  return (action) => {
+
+  const sender = (action) => {
     rendererEndpoint.send(IPC_DISPATCH_ACTION, action)
   }
+
+  return valvelet(sender, RATE_LIMIT, RATE_INTERVAL)
 }
 
 export default () => {
