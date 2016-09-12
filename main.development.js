@@ -1,31 +1,11 @@
-import { app, BrowserWindow, Menu, shell, ipcMain } from 'electron'
-import { IPC_DISPATCH_ACTION, IPC_MIDDLEWARE_READY } from './shared/messages'
-import { tapAssertDone } from './app/actions'
+import { app, BrowserWindow, Menu, shell } from 'electron'
+import startTapInterface from './tap-interface'
 
-let rendererEndpoint
 let menu
 let template
 let mainWindow = null
 
-ipcMain.on(IPC_MIDDLEWARE_READY, (event, arg) => {
-  rendererEndpoint = event.sender
-  // POC that should dispatch some tap assertion objects
-  rendererEndpoint.send(IPC_DISPATCH_ACTION, tapAssertDone({
-    ok: true,
-    id: '1',
-    diag: null
-  }))
-  rendererEndpoint.send(IPC_DISPATCH_ACTION, tapAssertDone({
-    ok: false,
-    id: '2',
-    diag: null
-  }))
-  rendererEndpoint.send(IPC_DISPATCH_ACTION, tapAssertDone({
-    ok: true,
-    id: '3',
-    diag: null
-  }))
-})
+startTapInterface(process.stdin)
 
 if (process.env.NODE_ENV === 'development') {
   require('electron-debug')() // eslint-disable-line global-require
