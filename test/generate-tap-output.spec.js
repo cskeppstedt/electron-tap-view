@@ -1,6 +1,4 @@
-var test = require('tape')
-
-// currently just using these tests to pipe into the application :)
+var test = require('tape-catch')
 
 test('timing test', (t) => {
   t.plan(1)
