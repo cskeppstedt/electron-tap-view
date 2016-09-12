@@ -1,5 +1,6 @@
-export default (state) => (
+export default ({ assertions, plan }) => (
   {
-    assertions: state.assertions
+    assertions,
+    plan
   }
 )

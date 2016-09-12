@@ -6,7 +6,12 @@ import mapDispatchToProps from './map-dispatch-to-props'
 
 const AppContainer = React.createClass({
   render () {
-    return <Home assertions={this.props.assertions} />
+    return (
+      <Home
+        assertions={this.props.assertions}
+        plan={this.props.plan}
+      />
+    )
   }
 })
 
