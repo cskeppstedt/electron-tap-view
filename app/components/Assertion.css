@@ -1,4 +1,29 @@
 .root {
-  margin: 10px 0;
-  padding: 10px;
+  font-weight: 200;
+  font-size: 0.8rem;
+  margin: 0;
+  padding: 5px 0;
+  text-align: left;
+}
+
+.ok {
+  color: #16a085;
+}
+
+.not-ok {
+  color: #d35400;
+}
+
+.id {
+  display: inline-block;
+  width: 3rem;
+  text-align: right;
+}
+
+.id:after {
+  content: ' )'
+}
+
+.name {
+  padding-left: 10px;
 }

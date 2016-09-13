@@ -1,8 +1,23 @@
 import React from 'react'
 import styles from './Assertion.css'
+import classNamesBind from 'classnames/bind'
 
-export default ({ assertion }) => (
-  <div className={styles.root}>
-    <strong>{assertion.id}:</strong> {assertion.ok ? 'ok' : 'not ok'}
-  </div>
-)
+const classNames = classNamesBind.bind(styles)
+
+export default ({ assertion }) => {
+  const rootStyles = classNames('root', {
+    'ok': assertion.ok,
+    'not-ok': !assertion.ok
+  })
+
+  return (
+    <div className={rootStyles}>
+      <span className={styles.id}>
+        {assertion.id}
+      </span>
+      <span className={styles.name}>
+        {assertion.name}
+      </span>
+    </div>
+  )
+}
