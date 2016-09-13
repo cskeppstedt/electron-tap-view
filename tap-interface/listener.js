@@ -5,8 +5,8 @@ const attachParser = (options) => {
   const p = tapParser()
 
   if (typeof onAssert === 'function') {
-    p.on('assert', ({ ok, id, diag }) => {
-      onAssert({ ok, id, diag })
+    p.on('assert', ({ ok, id, diag, name }) => {
+      onAssert({ ok, id, diag, name })
 
       if (ok) {
         console.info(`[${id}] ok`)
