@@ -1,0 +1,15 @@
+.root {
+  display: inline-block;
+  height: 30px;
+  line-height: 30px;
+  opacity: 0.8;
+  position: relative;
+  text-align: right;
+  width: 3rem;
+}
+
+.root svg {
+  position: absolute;
+  top: 50%;
+  right: 0;
+}

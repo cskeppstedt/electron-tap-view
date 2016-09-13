@@ -71,3 +71,9 @@ $ npm run package -- --[option]
 - --all: pack for all platforms
 
 Use `electron-packager` to pack your app with `--all` options for darwin (osx), linux and win32 (windows) platform. After build, you will find them in `release` folder. Otherwise, you will only find one for your os.
+
+## Attributions
+
+### Logo
+
+[audio casette](https://openclipart.org/detail/391/audio-cassette) by [molumen](https://www.behance.net/molumen)
