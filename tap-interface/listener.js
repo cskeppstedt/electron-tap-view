@@ -1,37 +1,25 @@
 import tapParser from 'tap-parser'
 
-const attachParser = (options) => {
-  const { readableStream, onAssert, onPlan } = options
+const attachParser = ({ readableStream, onAssert, onComment, onPlan }) => {
   const p = tapParser()
 
   if (typeof onAssert === 'function') {
-    p.on('assert', ({ ok, id, diag, name }) => {
-      onAssert({ ok, id, diag, name })
-
-      if (ok) {
-        console.info(`[${id}] ok`)
-      } else {
-        console.error(`[${id}] not ok, diag: ${JSON.stringify(diag)}`)
-      }
-    })
-  } else {
-    console.warn('no `onAssert` provided')
+    p.on('assert', onAssert)
   }
 
   if (typeof onPlan === 'function') {
-    p.on('plan', function ({ start, end }) {
-      // The plan is emitted after all the asserts are done.
-      console.info(`[plan] ${start}..${end}`)
-      onPlan({ start, end })
-      readableStream.unpipe(p)
-      process.nextTick(() => attachParser(options))
-    })
-  } else {
-    console.warn('no `onPlan` provided')
+    p.on('plan', onPlan)
   }
 
+  p.on('plan', function ({ start, end }) {
+    // The plan is emitted after all the asserts are done.
+    // We need to attach a new tap-parser at this point, the
+    // existing parser will not pick up any further input.
+    readableStream.unpipe(p)
+    process.nextTick(() => attachParser({ readableStream, onAssert, onComment, onPlan }))
+  })
+
   readableStream.pipe(p)
-  console.info('[listener] attached new listener to readableStream')
 }
 
 export default attachParser

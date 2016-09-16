@@ -16,19 +16,11 @@ const setupSender = (rendererEndpoint) => {
 }
 
 export default () => {
-  const queue = ((q) => {
-    const log = (eventName) => console.warn(`[queue:${q.length}] ${eventName}`)
-    return {
-      push: (action) => {
-        q.push(action)
-        log('item pushed')
-      },
-      flush: (sender) => {
-        log('flushing')
-        q.splice(0).forEach(sender)
-      }
+  const queue = ((q) => ({
+      push: (action) => { q.push(action) },
+      flush: (sender) => { q.splice(0).forEach(sender) }
     }
-  })([])
+  ))([])
 
   let sender
 
