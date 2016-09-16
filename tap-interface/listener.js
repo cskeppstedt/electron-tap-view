@@ -7,6 +7,10 @@ const attachParser = ({ readableStream, onAssert, onComment, onPlan }) => {
     p.on('assert', onAssert)
   }
 
+  if (typeof onComment === 'function') {
+    p.on('comment', onComment)
+  }
+
   if (typeof onPlan === 'function') {
     p.on('plan', onPlan)
   }
