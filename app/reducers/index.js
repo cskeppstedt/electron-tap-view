@@ -1,14 +1,22 @@
 import {
   TAP_ASSERT_DONE,
+  TAP_COMMENT,
   TAP_PLAN
 } from '../actions'
 
 const initialState = {
   assertions: {},
   currentCount: 0,
+  lastComment: null,
   nextEstimatedCount: 0,
   plan: undefined
 }
+
+const assertName = (name, lastComment) => (
+  lastComment
+    ? `[ ${lastComment.replace(/^#\s+/, '')} ] ${name}`
+    : name
+)
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -17,10 +25,20 @@ export default (state = initialState, action) => {
         ...state,
         assertions: {
           ...state.assertions,
-          [`assert_${action.payload.id}`]: action.payload
+          [`assert_${action.payload.id}`]: {
+            ...action.payload,
+            name: assertName(action.payload.name, state.lastComment)
+          }
         },
         currentCount: state.currentCount + 1,
+        lastComment: null,
         plan: undefined
+      }
+
+    case TAP_COMMENT:
+      return {
+        ...state,
+        lastComment: action.payload
       }
 
     case TAP_PLAN:
