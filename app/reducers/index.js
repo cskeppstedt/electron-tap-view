@@ -5,17 +5,26 @@ import {
 } from '../actions'
 
 const initialState = {
-  assertions: {},
+  events: [],
   currentCount: 0,
-  lastComment: null,
   nextEstimatedCount: 0,
   plan: undefined
 }
 
-const assertName = (name, lastComment) => (
-  lastComment
-    ? `[ ${lastComment.replace(/^#\s+/, '')} ] ${name}`
-    : name
+const assertEvent = (assert) => (
+  {
+    type: 'assert',
+    key: `assert_${assert.id}`,
+    assert
+  }
+)
+
+const commentEvent = (comment, idCounter) => (
+  {
+    type: 'comment',
+    key: `comment_${idCounter}_${comment.replace(/[^a-z]/ig, '_')}`,
+    comment
+  }
 )
 
 export default (state = initialState, action) => {
@@ -23,22 +32,23 @@ export default (state = initialState, action) => {
     case TAP_ASSERT_DONE:
       return {
         ...state,
-        assertions: {
-          ...state.assertions,
-          [`assert_${action.payload.id}`]: {
-            ...action.payload,
-            name: assertName(action.payload.name, state.lastComment)
-          }
-        },
+        events: [
+          ...state.events,
+          assertEvent(action.payload)
+        ],
         currentCount: state.currentCount + 1,
-        lastComment: null,
         plan: undefined
       }
 
     case TAP_COMMENT:
       return {
         ...state,
-        lastComment: action.payload
+        events: [
+          ...state.events,
+          commentEvent(action.payload, state.currentCount)
+        ],
+        currentCount: state.currentCount + 1,
+        plan: undefined
       }
 
     case TAP_PLAN:

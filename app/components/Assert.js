@@ -1,22 +1,22 @@
 import React from 'react'
-import styles from './Assertion.css'
+import styles from './Assert.css'
 import classNamesBind from 'classnames/bind'
 
 const classNames = classNamesBind.bind(styles)
 
-export default ({ assertion }) => {
+export default ({ assert }) => {
   const rootStyles = classNames('root', {
-    'ok': assertion.ok,
-    'not-ok': !assertion.ok
+    'ok': assert.ok,
+    'not-ok': !assert.ok
   })
 
   return (
     <div className={rootStyles}>
       <span className={styles.id}>
-        {assertion.id}
+        {assert.id}
       </span>
       <span className={styles.name}>
-        {assertion.name}
+        {assert.name}
       </span>
     </div>
   )

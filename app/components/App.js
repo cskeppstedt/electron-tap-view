@@ -1,10 +1,10 @@
 import React from 'react'
-import Assertion from './Assertion'
+import EventTimeline from './EventTimeline'
 import Logo from './Logo'
 import Plan from './Plan'
-import styles from './Home.css'
+import styles from './App.css'
 
-export default ({ assertions, plan, nextEstimatedCount, currentCount }) => (
+export default ({ events, plan, nextEstimatedCount, currentCount }) => (
   <div className={styles.container}>
     <Logo height='20' />
     <Plan
@@ -12,8 +12,6 @@ export default ({ assertions, plan, nextEstimatedCount, currentCount }) => (
       nextEstimatedCount={nextEstimatedCount}
       plan={plan}
     />
-    {assertions && Object.keys(assertions).map((id) => (
-      <Assertion key={id} assertion={assertions[id]} />
-    ))}
+    <EventTimeline events={events} />
   </div>
 )

@@ -1,13 +1,13 @@
 import { connect } from 'react-redux'
 import React from 'react'
-import Home from '../components/Home'
+import AppComponent from '../components/App'
 import mapStateToProps from './map-state-to-props'
 import mapDispatchToProps from './map-dispatch-to-props'
 
 const AppContainer = React.createClass({
   render () {
     return (
-      <Home {...this.props} />
+      <AppComponent {...this.props} />
     )
   }
 })
