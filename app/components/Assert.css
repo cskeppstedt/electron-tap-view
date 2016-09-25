@@ -4,6 +4,7 @@
   margin: 0;
   padding: 5px 0;
   text-align: left;
+  line-height: 20px;
 }
 
 .ok {
@@ -16,7 +17,7 @@
 
 .id {
   display: inline-block;
-  width: 3rem;
+  width: 50px;
   text-align: right;
 }
 
@@ -26,4 +27,24 @@
 
 .name {
   padding-left: 10px;
+}
+
+.diag {
+  padding-left: 60px;
+}
+
+.expectation {
+  background-color: rgba(0,0,0,0.1);
+  border-radius: 3px;
+  display: inline-block;
+  font-family: Courier New, Courier, monospace;
+  font-weight: bold;
+  margin-left: 2px;
+  padding: 1px 3px;
+  white-space: pre;
+}
+
+.location {
+  opacity: 0.8;
+  font-size: 0.6rem;
 }
