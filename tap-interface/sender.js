@@ -6,8 +6,6 @@ const RATE_LIMIT = 10 // The maximum number of allowed calls per interval.
 const RATE_INTERVAL = 100 // The timespan where limit is calculated.
 
 const setupSender = (rendererEndpoint) => {
-  console.info('renderer ready')
-
   const sender = (action) => {
     rendererEndpoint.send(IPC_DISPATCH_ACTION, action)
   }

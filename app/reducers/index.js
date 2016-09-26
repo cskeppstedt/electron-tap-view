@@ -3,19 +3,22 @@ import {
   TAP_COMMENT,
   TAP_PLAN
 } from '../actions'
+import { assertEvent, commentEvent, planEvent } from './event-creators'
 
 const initialState = {
-  assertions: {},
-  currentCount: 0,
-  lastComment: null,
-  nextEstimatedCount: 0,
-  plan: undefined
+  events: [],
+  running: false
 }
 
-const assertName = (name, lastComment) => (
-  lastComment
-    ? `[ ${lastComment.replace(/^#\s+/, '')} ] ${name}`
-    : name
+const shouldIgnoreComment = ({ running }, { payload }) => (
+  !running && (
+    /^#\s+(tests|pass|fail)\s+(\d+)\s*$/.test(payload) ||
+    /^#\s+ok\s*$/.test(payload)
+  )
+)
+
+const shouldReset = ({ running }) => (
+  !running
 )
 
 export default (state = initialState, action) => {
@@ -23,30 +26,41 @@ export default (state = initialState, action) => {
     case TAP_ASSERT_DONE:
       return {
         ...state,
-        assertions: {
-          ...state.assertions,
-          [`assert_${action.payload.id}`]: {
-            ...action.payload,
-            name: assertName(action.payload.name, state.lastComment)
-          }
-        },
-        currentCount: state.currentCount + 1,
-        lastComment: null,
-        plan: undefined
+        events: [
+          ...state.events,
+          assertEvent(action.payload)
+        ],
+        running: true
       }
 
     case TAP_COMMENT:
+      if (shouldIgnoreComment(state, action)) {
+        return state
+      }
+
+      const events = shouldReset(state, action)
+      ? [
+        commentEvent(action.payload, 0)
+      ]
+      : [
+        ...state.events,
+        commentEvent(action.payload, state.events.length)
+      ]
+
       return {
         ...state,
-        lastComment: action.payload
+        events,
+        running: true
       }
 
     case TAP_PLAN:
       return {
         ...state,
-        currentCount: 0,
-        plan: action.payload,
-        nextEstimatedCount: state.currentCount
+        events: [
+          ...state.events,
+          planEvent(action.payload)
+        ],
+        running: false
       }
 
     default:
