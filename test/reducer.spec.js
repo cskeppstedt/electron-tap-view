@@ -1,7 +1,7 @@
 import test from 'tape-catch'
 import * as actions from '../app/actions'
 import reducer from '../app/reducers'
-import { assertEvent, commentEvent, planEvent } from '../app/reducers/event-creators
+import { assertEvent, commentEvent, planEvent } from '../app/reducers/event-creators'
 
 test.only('reducer', (t) => {
   t.test('appends first assertion event', (assert) => {
@@ -49,14 +49,10 @@ test.only('reducer', (t) => {
       running: false
     }
     const action = actions.tapComment('the "#comment"!')
-    const actual = reducer(state, action).events
+    const actual = reducer(state, action)
     const expected = {
       events: [
-        {
-          type: 'comment',
-          key: 'comment_1_the___comment__',
-          comment: 'the "#comment"!'
-        }
+        commentEvent('the "#comment"!', 0)
       ],
       running: true
     }
@@ -69,18 +65,14 @@ test.only('reducer', (t) => {
   t.test('appends comment events', (assert) => {
     const state = {
       events: [{ the: 'pre-existing event' }],
-      running: false
+      running: true
     }
     const action = actions.tapComment('the "#comment"!')
-    const actual = reducer(state, action).events
+    const actual = reducer(state, action)
     const expected = {
       events: [
         { the: 'pre-existing event' },
-        {
-          type: 'comment',
-          key: 'comment_1_the___comment__',
-          comment: 'the "#comment"!'
-        }
+        commentEvent('the "#comment"!', 1)
       ],
       running: true
     }
@@ -90,21 +82,70 @@ test.only('reducer', (t) => {
     assert.end()
   })
 
+  t.test('re-initialize state with new comment', (assert) => {
+    const state = {
+      events: [
+        { the: 'old event' },
+        { another: 'old event' }
+      ],
+      running: false
+    }
+    const action = actions.tapComment('the new comment')
+    const actual = reducer(state, action)
+    const expected = {
+      events: [
+        commentEvent('the new comment', 0)
+      ],
+      running: true
+    }
+
+    assert.deepEqual(actual.events, expected.events, 'only new event is in the event list')
+    assert.equal(actual.running, expected.running, 'running flag is set')
+    assert.end()
+  })
+
+  t.test('ignoring summary comments when non-running', (assert) => {
+    const state = {
+      events: [{ the: 'pre-existing event' }],
+      running: false
+    }
+    const expected = {
+      events: [{ the: 'pre-existing event' }],
+      running: false
+    }
+    const ignoredActions = [
+      actions.tapComment('# tests 123 '),
+      actions.tapComment('# fail   44\n'),
+      actions.tapComment('# pass    9'),
+      actions.tapComment('# ok')
+    ]
+
+    assert.plan(8)
+    ignoredActions.reduce((currentState, action) => {
+      const actual = reducer(currentState, action)
+      assert.deepEqual(actual.events, expected.events, `"${action.payload}": is skipped`)
+      assert.equal(actual.running, expected.running, `"${action.payload}": running flag is preserved`)
+      return actual
+    }, state)
+  })
+
   t.test('appends plan events', (assert) => {
     const state = {
-      events: [{ the: 'pre-existing event' }]
+      events: [{ the: 'pre-existing event' }],
+      running: true
     }
     const action = actions.tapPlan({ the: 'plan' })
-    const actual = reducer(state, action).events
-    const expected = [
-      { the: 'pre-existing event' },
-      {
-        type: 'plan',
-        key: 'plan',
-        plan: { the: 'plan' }
-      }
-    ]
-    assert.deepEqual(actual, expected, 'plan event is appended')
+    const actual = reducer(state, action)
+    const expected = {
+      events: [
+        { the: 'pre-existing event' },
+        planEvent({ the: 'plan' })
+      ],
+      running: false
+    }
+
+    assert.deepEqual(actual.events, expected.events, 'plan event is appended')
+    assert.equal(actual.running, expected.running, 'running flag is unset')
     assert.end()
   })
 
