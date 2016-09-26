@@ -15,7 +15,7 @@ export default ({ events }) => (
       const Constructor = constructors[type]
 
       return (
-        <Constructor {...props} />
+        Constructor && <Constructor {...props} />
       )
     })}
   </div>
