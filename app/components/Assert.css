@@ -35,9 +35,10 @@
 
 .expectation {
   background-color: rgba(0,0,0,0.1);
-  border-radius: 3px;
+  border-radius: 2px;
   display: inline-block;
   font-family: Courier New, Courier, monospace;
+  font-size: 0.7rem;
   font-weight: bold;
   margin-left: 2px;
   padding: 1px 3px;
@@ -45,6 +46,6 @@
 }
 
 .location {
-  opacity: 0.8;
   font-size: 0.6rem;
+  opacity: 0.8;
 }
