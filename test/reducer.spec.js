@@ -82,6 +82,28 @@ test.only('reducer', (t) => {
     assert.end()
   })
 
+  t.test('re-initialize state with new assert', (assert) => {
+    const state = {
+      events: [
+        { the: 'old event' },
+        { another: 'old event' }
+      ],
+      running: false
+    }
+    const action = actions.tapAssertDone({ some: 'assert' })
+    const actual = reducer(state, action)
+    const expected = {
+      events: [
+        assertEvent({ some: 'assert' })
+      ],
+      running: true
+    }
+
+    assert.deepEqual(actual.events, expected.events, 'only new event is in the event list')
+    assert.equal(actual.running, expected.running, 'running flag is set')
+    assert.end()
+  })
+
   t.test('re-initialize state with new comment', (assert) => {
     const state = {
       events: [
@@ -131,7 +153,11 @@ test.only('reducer', (t) => {
 
   t.test('appends plan events', (assert) => {
     const state = {
-      events: [{ the: 'pre-existing event' }],
+      events: [
+        { the: 'pre-existing event' },
+        { another: 'pre-existing event' },
+        { third: 'pre-existing event' }
+      ],
       running: true
     }
     const action = actions.tapPlan({ the: 'plan' })
@@ -139,13 +165,17 @@ test.only('reducer', (t) => {
     const expected = {
       events: [
         { the: 'pre-existing event' },
+        { another: 'pre-existing event' },
+        { third: 'pre-existing event' },
         planEvent({ the: 'plan' })
       ],
-      running: false
+      running: false,
+      nextEstimatedCount: 3
     }
 
     assert.deepEqual(actual.events, expected.events, 'plan event is appended')
     assert.equal(actual.running, expected.running, 'running flag is unset')
+    assert.equal(actual.nextEstimatedCount, expected.nextEstimatedCount, 'nextEstimatedCount is set to the count of events')
     assert.end()
   })
 

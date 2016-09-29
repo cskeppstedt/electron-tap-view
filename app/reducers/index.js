@@ -26,7 +26,11 @@ export default (state = initialState, action) => {
     case TAP_ASSERT_DONE:
       return {
         ...state,
-        events: [
+        events: shouldReset(state, action)
+        ? [
+          assertEvent(action.payload)
+        ]
+        : [
           ...state.events,
           assertEvent(action.payload)
         ],
@@ -38,18 +42,16 @@ export default (state = initialState, action) => {
         return state
       }
 
-      const events = shouldReset(state, action)
-      ? [
-        commentEvent(action.payload, 0)
-      ]
-      : [
-        ...state.events,
-        commentEvent(action.payload, state.events.length)
-      ]
-
       return {
         ...state,
-        events,
+        events: shouldReset(state, action)
+        ? [
+          commentEvent(action.payload, 0)
+        ]
+        : [
+          ...state.events,
+          commentEvent(action.payload, state.events.length)
+        ],
         running: true
       }
 
@@ -60,6 +62,7 @@ export default (state = initialState, action) => {
           ...state.events,
           planEvent(action.payload)
         ],
+        nextEstimatedCount: state.events.length,
         running: false
       }
 
