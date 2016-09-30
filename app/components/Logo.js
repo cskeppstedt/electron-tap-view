@@ -1,6 +1,8 @@
 import React from 'react'
 import styles from './Logo.css'
+import classNamesBind from 'classnames/bind'
 
+const classNames = classNamesBind.bind(styles)
 const viewboxWidth = 548.48
 const viewboxHeight = 331.47
 const title = 'Logo'
@@ -22,11 +24,14 @@ const scale = (width, height, ratio) => {
 }
 
 export default function Logo (props) {
-  const { width, height, ...remainingProps } = props
+  const { width, height, running, ...remainingProps } = props
   const { scaledWidth, scaledHeight } = scale(width, height, ratio)
+  const classes = classNames(styles.root, {
+    'is-running': running
+  })
 
   return (
-    <span className={styles.root}>
+    <span className={classes}>
       <svg
         width={scaledWidth}
         height={scaledHeight}

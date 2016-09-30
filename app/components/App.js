@@ -1,17 +1,15 @@
 import React from 'react'
 import EventTimeline from './EventTimeline'
 import Logo from './Logo'
-import Plan from './Plan'
+import StatusTitle from './StatusTitle'
 import styles from './App.css'
 
-export default ({ events, plan, nextEstimatedCount, currentCount }) => (
+export default ({ events, nextEstimatedCount, running }) => (
   <div className={styles.container}>
-    <Logo height='20' />
-    <Plan
-      currentCount={currentCount}
-      nextEstimatedCount={nextEstimatedCount}
-      plan={plan}
-    />
+    <div className={styles.header}>
+      <Logo height='20' running={running} />
+      <StatusTitle events={events} running={running} nextEstimatedCount={nextEstimatedCount} />
+    </div>
     <EventTimeline events={events} />
   </div>
 )

@@ -179,5 +179,13 @@ test.only('reducer', (t) => {
     assert.end()
   })
 
+  t.test('has a slow test', (assert) => {
+    assert.plan(1)
+
+    setTimeout(() => {
+      assert.equal(1, 1, 'slow axiom')
+    }, 2134)
+  })
+
   t.end()
 })
